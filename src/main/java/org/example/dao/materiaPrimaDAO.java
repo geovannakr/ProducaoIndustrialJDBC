@@ -73,4 +73,43 @@ public class materiaPrimaDAO {
         }
         return materiasprimas;
     }
+
+    public double buscarEstoquePorID(int idMateriaPrima){
+        String query = "SELECT estoque FROM MateriaPrima WHERE id = ?";
+
+        double quantidade = 0;
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, idMateriaPrima);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+                quantidade = rs.getDouble("estoque");
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return quantidade;
+    }
+
+    public void atualizaEstoque(int id, double estoque){
+        String query = "UPDATE MateriaPrima SET estoque = ? WHERE  id = ?";
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setDouble(1,estoque);
+            stmt.setInt(2,id);
+            stmt.executeUpdate();
+
+            System.out.println("Estoque da peça atualizado com sucesso!");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+    }
 }

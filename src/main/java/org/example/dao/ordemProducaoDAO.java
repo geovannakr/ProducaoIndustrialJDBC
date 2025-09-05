@@ -31,7 +31,7 @@ public class ordemProducaoDAO {
     }
 
     public List<OrdemProducao> listarOrdensDeProducao(){
-        String query = "SELECT id, idPrduto, idMaquina, quantidadeProduzir, dataSolicitacao, status FROM OrdemProducao WHERE status = 'PENDENTE'";
+        String query = "SELECT id, idProduto, idMaquina, quantidadeProduzir, dataSolicitacao, status FROM OrdemProducao WHERE status = 'PENDENTE'";
         List<OrdemProducao> ordens = new ArrayList<>();
 
         try(Connection conn = Conexao.conectar();
@@ -55,5 +55,21 @@ public class ordemProducaoDAO {
             e.printStackTrace();
         }
         return ordens;
+    }
+
+    public void atualizaStatus(int idOrdem){
+        String query = "UPDATE OrdemProducao SET status = 'CONCLUÍDA' WHERE id = ?";
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1,idOrdem);
+            stmt.executeUpdate();
+
+            System.out.println("Status da Ordem de Produção atualizado com sucesso!");
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }

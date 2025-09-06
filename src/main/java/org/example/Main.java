@@ -58,6 +58,10 @@ public class Main {
                 executarProducao();
                 break;
             }
+            case 8: {
+                listarEstoquesMateriaPrima();
+                break;
+            }
         }
         if (!sair) {
             inicio();
@@ -364,6 +368,36 @@ public class Main {
         } else {
             System.out.println("ID da Ordem de Produção inválido! Tente novamente: ");
             executarProducao();
+        }
+    }
+
+    public static void listarEstoquesMateriaPrima() {
+        var ordemProducaoDao = new ordemProducaoDAO();
+        List<Integer> opcoesIdOrdemProducao = new ArrayList<>();
+        List<OrdemProducao> ordens = ordemProducaoDao.listarOrdensDeProducao();
+
+        System.out.println(" ------------------------------------ LISTA DAS ORDENS DE PRODUÇÃO ------------------------------------");
+        for (OrdemProducao ordemProducao : ordens) {
+            System.out.println("----- ORDEM DE PRODUÇÃO -----\n" +
+                    "ID: " + ordemProducao.getId() + "\n" +
+                    "ID produto: " + ordemProducao.getIdProduto() + "\n" +
+                    "ID máquina: " + ordemProducao.getIdMaquina() + "\n" +
+                    "Quantidade a produzir: " + ordemProducao.getQuantidadeProduzir() + "\n" +
+                    "Data da solicitação: " + ordemProducao.getDataSolicitacao() + "\n" +
+                    "Status: " + ordemProducao.getStatus() + "\n" +
+                    "--------------------------------------------------------------------");
+        }
+        var materiaProducaoDao = new materiaPrimaDAO();
+        List<Integer> opcoesIdMateriaPrima = new ArrayList<>();
+        List<MateriaPrima> materiaPrimas = materiaProducaoDao.listarMateriasPrimas();
+
+        System.out.println(" ------------------------------------ LISTA DAS MATÉRIAS-PRIMAS ------------------------------------");
+        for (MateriaPrima materiaPrima : materiaPrimas) {
+            System.out.println("----- MATÉRIA PRIMA ----- \n" +
+                    "ID: " + materiaPrima.getId() + "\n" +
+                    "Nome: " + materiaPrima.getNome() + "\n" +
+                    "Estoque: " + materiaPrima.getEstoque() + "\n" +
+                    "--------------------------------------------------");
         }
     }
 }
